@@ -24,7 +24,7 @@ Group可以将不同的微服务划分到一个组里
 集群 https://nacos.io/zh-cn/docs/quick-start-docker.html
 docker run -d -p 8848:8848 --name nacos 
 -e NACOS_SERVERS="ip1:8848 ip2:8848" 
--e NACOS_SERVER_IP=47.90.56.205 
+-e NACOS_SERVER_IP=mysql-ip 
 -e SPRING_DATASOURCE_PLATFORM=mysql 
 -e MYSQL_SERVICE_HOST=mysql-ip 
 -e MYSQL_SERVICE_DB_NAME=nacos 
