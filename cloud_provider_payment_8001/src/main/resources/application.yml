@@ -1,0 +1,59 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: cloud-payment-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db2020?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 00000000
+  profiles:
+    active: dev
+  cloud:
+    stream:
+      binders:    # 配置要绑定的rabbitmq服务信息
+        defaultRabbitMQ:    # 定义名称、与binding整合
+          type: rabbit       # 消息组件类型
+          environment:      # rabbit环境配置
+            spring:
+              rabbitmq:
+                host: localhost
+      bindings:             # 服务的整合处理
+        input:             # 消息消费者
+          destination: scExchange   # 要使用的Exchange名称
+          content-type: application/json  # 消息类型
+          binder: defaultRabbitMQ           # 设置要绑定的消息服务
+          # group: msg_${server.port}       # 相当于 rabbitmq中的队列、不同组可以多次消费消息
+          # 定义group后会持久化、错过的消息重启后还能继续消费
+          # 同一个组的多个微服务竞争获取消息
+          group: payment_msg
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      # 采样率、0-1之间、1表示全部采集
+      probability: 1
+
+
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.tonlp.springcloud.entities
+
+# eureka
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7003.com:7003/eureka
+  instance:
+    # eureka中显示实例名
+    instance-id: PAYMENT-${server.port}
+    # 实例显示ip
+    prefer-ip-address: true
+
+

@@ -1,0 +1,28 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: payment_ok
+          uri: http://localhost:8001
+          predicates:
+            - Path=/hystrix/payment/ok/**
+
+        - id: payment_cb
+          uri: http://localhost:8001
+          predicates:
+            - Path=/hystrix/payment/cb/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
+
+
+
+

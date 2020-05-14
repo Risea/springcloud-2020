@@ -1,0 +1,45 @@
+server:
+  port: 80
+spring:
+  application:
+    name: nacos-payment-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 103.38.41.62:8848
+      config:
+        server-addr: 103.38.41.62:8848
+        file-extension: yaml
+        group: DEV_GROUP
+        namespace: ff269bb1-0109-4dae-8d8c-631686f41f2d
+    sentinel:
+      transport:
+        # 配置dashboard地址
+        # dashboard: 103.38.41.62:8858
+        dashboard: localhost:8080
+        # 默认8719，如被占用会自动加1
+        port: 8719
+      datasource:
+        ds:
+          nacos:
+            server-addr: 103.38.41.62:8848
+            dataId: sentinel-payment-consumer
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+            namespace: ff269bb1-0109-4dae-8d8c-631686f41f2d
+  profiles:
+    active: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 不加这个  服务端断了会直接报错
+feign:
+  sentinel:
+    enabled: true
+
+

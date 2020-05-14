@@ -1,0 +1,18 @@
+# 此配置测试 关闭 自我保护机制
+server:
+  port: 7001
+eureka:
+  instance:
+    hostname: eureka7001.com   # eureka 服务端实例名
+  client:
+    register-with-eureka: false   # 不向eureka注册自己
+    fetch-registry: false          # 不需要去检索服务
+    service-url:
+      # 单机
+      defaultZone: http://eureka7001.com:7001/eureka
+  server:
+    # 禁用自我保护机制
+    enable-self-preservation: false
+    # 两秒一次心跳连接
+    # eviction-interval-timer-in-ms: 2000
+    eviction-interval-timer-in-ms: 10000

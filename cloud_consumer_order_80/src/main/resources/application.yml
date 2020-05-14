@@ -1,0 +1,35 @@
+server:
+  port: 80
+
+# eureka
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7003.com:7003/eureka
+
+
+spring:
+  application:
+    name: consumer-order-service
+  cloud:
+    stream:
+      binders:    # 配置要绑定的rabbitmq服务信息
+        defaultRabbitMQ:    # 定义名称、与binding整合
+          type: rabbit       # 消息组件类型
+          environment:      # rabbit环境配置
+            spring:
+              rabbitmq:
+                host: localhost
+      bindings:             # 服务的整合处理
+        output:             # 消息生产者
+          destination: scExchange   # 要使用的Exchange名称
+          content-type: application/json  # 消息类型
+          binder: defaultRabbitMQ           # 设置要绑定的消息服务
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      # 采样率、0-1之间、1表示全部采集
+      probability: 1
